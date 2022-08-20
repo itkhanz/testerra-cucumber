@@ -30,8 +30,7 @@ public class FormAuthenticationPage extends Page {
 
     private GuiElement successMessage = new GuiElement(this.getWebDriver(), By.xpath("//div[@id='flash' and @class='flash success']"));
 
-
-    private GuiElement closeMessage = new GuiElement(this.getWebDriver(), By.className("close"));
+    private GuiElement closeMessageIcon = errorMessage.getSubElement(By.className("close"));
 
     public FormAuthenticationPage(WebDriver driver) {
         super(driver);
@@ -49,13 +48,14 @@ public class FormAuthenticationPage extends Page {
         return this.successMessage.getText();
     }
     public String getErrorMessage () {
-        return this.errorMessage.getText();
-
-        /*if(errorMessageText.equals("Your username is invalid!") || errorMessageText.equals("Your password is invalid!")) {
+        boolean success = this.errorMessage.waits().waitForIsDisplayed();
+        if (success) {
+            String errorMessageTextAll = this.errorMessage.getText();
+            String closeIconText = this.closeMessageIcon.getText();
+            String errorMessageText = errorMessageTextAll.replace(closeIconText, "").trim();
             return errorMessageText;
         }
-
-        return "loginFailed";*/
+        return "Login failed flash message not displayed";
     }
 
     public SecureArea loginSuccessful() {

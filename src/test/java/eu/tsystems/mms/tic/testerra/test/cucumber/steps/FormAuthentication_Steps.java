@@ -47,9 +47,19 @@ public class FormAuthentication_Steps {
         Assert.assertTrue(secureArea.verifyPageSubheader(), "subheader text does not contain Secure Area");
     }
 
-    @And("user gets the message {string}")
+    @And("user gets the success message {string}")
     public void verifyLoginSuccessMessage(String loginSuccessMsg) {
         Assert.assertEquals(secureArea.getSuccessMessage(), loginSuccessMsg);
+    }
+
+    @And("user gets the fail message containing {string}")
+    public void verifyLoginFailedMessage(String loginFailedMsg) {
+        Assert.assertTrue(formAuthenticationPage.getErrorMessage().contains(loginFailedMsg), "failed login message is not displayed");
+    }
+
+    @And("user stays on the Login Page")
+    public void verifyLoginPageUrl() {
+        Assert.assertEquals(formAuthenticationPage.getLoginPageUrl(), "https://the-internet.herokuapp.com/login");
     }
 
 
